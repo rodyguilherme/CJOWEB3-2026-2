@@ -1,4 +1,5 @@
-.login {
+form {
+  margin-right: .25em;
   max-width: 400px;
   margin: auto;
 }
@@ -7,10 +8,6 @@
   text-align: center;
 }
 
-button, a, input{
+button, input, .p-select {
   width: 100%;
-}
-
-a {
-  text-decoration: none;
-}
+}   

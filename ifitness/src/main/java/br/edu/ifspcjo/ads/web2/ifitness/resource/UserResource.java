@@ -41,11 +41,12 @@ public class UserResource {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("hasAuthority('ROLE_REGISTER_USER')")
-	public User create(@Valid @RequestBody User user, 
-			HttpServletResponse response) {
-		return userRepository.save(user);
+	// remover *************
+	//@PreAuthorize("hasAuthority('ROLE_REGISTER_USER') and #oauth2.hasScope('write')") 
+	public User create(@Valid @RequestBody User user, HttpServletResponse response) {
+		return userService.save(user); // aqui!!!
 	}
+
 	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_USER')")

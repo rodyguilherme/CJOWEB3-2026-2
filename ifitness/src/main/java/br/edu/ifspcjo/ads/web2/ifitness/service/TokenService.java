@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -15,12 +16,18 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Service;
 
+import br.edu.ifspcjo.ads.web2.ifitness.domain.model.User;
+import br.edu.ifspcjo.ads.web2.ifitness.repository.UserRepository;
+
 @Service
 public class TokenService {
 
     private final JwtEncoder encoder;
     private final JwtDecoder decoder;
-
+    
+    @Autowired
+	private UserRepository userRepository;
+    
     public TokenService(JwtEncoder encoder, JwtDecoder decoder) {
         this.encoder = encoder;
         this.decoder = decoder;
@@ -31,13 +38,16 @@ public class TokenService {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
+        Optional<User> userOptional = userRepository.findByEmail(authentication.getName());
         
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.HOURS)) // Token expira em 1 hora
+                .expiresAt(now.plus(30, ChronoUnit.SECONDS)) 
                 .subject(authentication.getName())
                 .claim("authorities", authorities)
+                .claim("user_id", userOptional.get().getId())
+                .claim("name", userOptional.get().getName())
                 .build();
         
         return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

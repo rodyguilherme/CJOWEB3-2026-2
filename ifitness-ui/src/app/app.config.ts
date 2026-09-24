@@ -6,8 +6,10 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { IfitnessHttpInterceptor } from './security/ifitness-http-interceptor';
+import { DatePipe } from '@angular/common';
 
 export function tokenGetter(): any {
   return localStorage.getItem('token');
@@ -25,7 +27,8 @@ export const appConfig: ApplicationConfig = {
         config: {
           tokenGetter: tokenGetter,
           allowedDomains: ['localhost:8080'],
-          disallowedRoutes: ['http://localhost:8080/auth/login']
+          disallowedRoutes: ['http://localhost:8080/auth/login', 'http://localhost:8080/auth/refresh','http://localhost:8080/users']
+
         }
       })
     ),
@@ -35,6 +38,12 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura
       }
-    })
+    }),
+      {
+    provide: HTTP_INTERCEPTORS,
+    useClass: IfitnessHttpInterceptor,
+    multi: true,
+  },
+   DatePipe  
   ]
 };
