@@ -1,5 +1,5 @@
 <div class="container">
-  
+
   <form autocomplete="off" (ngSubmit)="filter()" class="p-grid p-fluid">
 
     <div class="p-col-12 text-center">
@@ -63,11 +63,10 @@
           <td>{{ activity.duration }} min</td>
           <td class="text-center">
             <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
-              class="p-button-rounded p-button-text p-button-info mr-1"
-              [routerLink]="['/activities', activity.id]"></a>
+              class="p-button-rounded p-button-text p-button-info mr-1" [routerLink]="['/activities', activity.id]"></a>
             <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
-              class="p-button-rounded p-button-text p-button-danger"
-              (click)="confirmRemoval(activity)"></button>
+              class="p-button-rounded p-button-text p-button-danger" (click)="confirmRemoval(activity)"
+              [disabled]="!auth.hasPermission('ROLE_REMOVE_ACTIVITY')"></button>
           </td>
         </tr>
       </ng-template>

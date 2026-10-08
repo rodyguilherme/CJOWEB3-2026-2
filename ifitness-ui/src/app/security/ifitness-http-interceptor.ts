@@ -15,6 +15,12 @@ export class IfitnessHttpInterceptor implements HttpInterceptor {
     if (req.url.includes('/auth/login') || req.url.includes('/auth/refresh') || req.url.includes('/users')) {
       return next.handle(req);
     }
+    
+    if (req.url.includes('/auth/login') || req.url.includes('/auth/refresh')
+        || req.url.includes('/auth/logout') || req.url.includes('/users')) {
+      return next.handle(req);
+    }
+
 
     // 2. Verifica se o token precisa ser renovado ANTES da requisição
     if (this.auth.isInvalidAccessToken()) {

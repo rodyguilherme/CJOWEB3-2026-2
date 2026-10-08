@@ -1,0 +1,1 @@
+DELETE FROM user_permission WHERE id_user = 2 AND id_permission = 5;

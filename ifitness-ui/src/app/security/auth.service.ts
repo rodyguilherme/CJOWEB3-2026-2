@@ -36,7 +36,7 @@ export class AuthService {
       );
       console.log(response);
       this.storeToken(response['accessToken']);
-        } catch (response: any) {
+    } catch (response: any) {
       if (response.status === 400 && response.error === 'invalid_grant') {
         return Promise.reject('Usuário e/ou senha inválida!');
       }
@@ -44,7 +44,7 @@ export class AuthService {
     }
   }
 
-    async getNewAccessToken(): Promise<void> {
+  async getNewAccessToken(): Promise<void> {
     const headers = new HttpHeaders()
       .append('Content-Type', 'application/json');
 
@@ -84,24 +84,35 @@ export class AuthService {
     }
   }
 
-    async logout(): Promise<void> {
-    const headers = new HttpHeaders()
-      .append('Content-Type', 'application/json');
+  clearAccessToken(): void {
+    localStorage.removeItem('token');
+    this.jwtPayload = null;
+  }
 
-    const body = {};
-
+  async logout(): Promise<void> {
     try {
-      const response: any = await firstValueFrom(
-        this.http.post(this.logoutUrl, body, { headers, withCredentials: true })
+      await firstValueFrom(
+        this.http.post(this.logoutUrl, {}, { withCredentials: true })
       );
-      console.log(response);
-      this.storeToken(response['accessToken']);
-    } catch (response: any) {
-      return Promise.reject(response);
     } finally {
-      localStorage.removeItem('token');
+      this.clearAccessToken();
     }
   }
+
+    hasPermission(permission: string): boolean {
+    const authorities: string = this.jwtPayload?.authorities ?? '';
+    return authorities.split(' ').includes(permission);
+  }
+
+  hasAnyPermission(roles: string[]): boolean {
+    for (const role of roles) {
+      if (this.hasPermission(role)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 
 
 }
