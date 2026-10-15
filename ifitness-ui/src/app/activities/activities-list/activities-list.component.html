@@ -6,10 +6,11 @@
       <h1>Atividades Físicas</h1>
     </div>
 
-    <fieldset class="p-col-12 p-md-12 mb-3">
+        <fieldset class="filtros mb-3">
       <legend><i class="pi pi-filter mr-2"></i>Filtros de Pesquisa</legend>
 
-      <p-select [options]="types" placeholder="Selecione" name="type" [(ngModel)]="type">
+      <p-select [options]="types" placeholder="Selecione" name="type" [(ngModel)]="type"
+        [style]="{ width: '100%' }">
       </p-select>
 
       <div class="mt-2">
@@ -63,9 +64,11 @@
           <td>{{ activity.duration }} min</td>
           <td class="text-center">
             <a pButton icon="pi pi-pencil" pTooltip="Editar" tooltipPosition="top"
-              class="p-button-rounded p-button-text p-button-info mr-1" [routerLink]="['/activities', activity.id]"></a>
+              class="p-button-rounded p-button-text p-button-info mr-1"
+              [routerLink]="['/activities', activity.id]"></a>
             <button pButton icon="pi pi-trash" pTooltip="Excluir" tooltipPosition="top"
-              class="p-button-rounded p-button-text p-button-danger" (click)="confirmRemoval(activity)"
+              class="p-button-rounded p-button-text p-button-danger"
+              (click)="confirmRemoval(activity)"
               [disabled]="!auth.hasPermission('ROLE_REMOVE_ACTIVITY')"></button>
           </td>
         </tr>
@@ -79,7 +82,7 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="p-col-12">
+  <div class="p-col-12 mt-3 text-center">
     <p><a pButton label="Nova Atividade" icon="pi pi-plus" routerLink="/activities/new"></a></p>
   </div>
 </div>

@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
 
+import br.edu.ifspcjo.ads.web2.ifitness.repository.projection.ActivityStatistics;
 import br.edu.ifspcjo.ads.web2.ifitness.domain.model.Activity;
 import br.edu.ifspcjo.ads.web2.ifitness.repository.ActivityRepository;
 import br.edu.ifspcjo.ads.web2.ifitness.repository.filter.ActivityFilter;
 import br.edu.ifspcjo.ads.web2.ifitness.service.ActivityService;
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/activities")
@@ -38,7 +41,14 @@ public class ActivityResource {
 	public List<Activity> filter(ActivityFilter activityFilter){
 		return activityService.filter(activityFilter);
 	}
-	
+
+	@GetMapping("/statistics")
+	@PreAuthorize("hasAuthority('ROLE_SEARCH_ACTIVITY')")
+	public ActivityStatistics statistics(Authentication authentication) {
+		// authentication.getName() devolve o e-mail do usuário dono do access token
+		return activityService.statistics(authentication.getName());
+	}
+
 	@GetMapping("/{id}")
 	@PreAuthorize("hasAuthority('ROLE_SEARCH_ACTIVITY')")
 	public ResponseEntity<Activity> findById(@PathVariable Long id) {

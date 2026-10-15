@@ -9,6 +9,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 
 import { NavbarComponent } from './core/navbar/navbar.component';
 import { ErrorHandlerService } from './core/error-handler.service';
+import { FooterComponent } from './core/footer.component';
+
 
 registerLocaleData(localePt);
 
@@ -19,6 +21,7 @@ registerLocaleData(localePt);
     CommonModule,
     RouterOutlet,
     NavbarComponent,
+    FooterComponent,
     ToastModule,
     ConfirmDialogModule
   ],

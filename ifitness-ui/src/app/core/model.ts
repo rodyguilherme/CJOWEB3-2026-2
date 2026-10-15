@@ -1,5 +1,19 @@
 import moment from 'moment';
 
+export interface ActivityTypeStatistic {
+  type: string;
+  total: number;
+  distance: number;
+  duration: number;
+}
+
+export interface ActivityStatistics {
+  totalDistance: number;
+  totalDuration: number;
+  totalActivities: number;
+  byType: ActivityTypeStatistic[];
+}
+
 export class User {
   id!: number;
   name!: string;
@@ -45,5 +59,8 @@ export class Activity {
       user: activity.user
     }
   }
+
+
+
 
 }

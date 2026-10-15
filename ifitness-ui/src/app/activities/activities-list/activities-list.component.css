@@ -6,3 +6,16 @@ img {
 a {
   text-decoration: none;
 }
+
+.filtros {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;   /* centraliza horizontalmente */
+}
+
+/* opcional: em telas pequenas 40% fica estreito demais */
+@media (max-width: 768px) {
+  .filtros {
+    width: 100%;
+  }
+}
